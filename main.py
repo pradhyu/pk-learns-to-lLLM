@@ -4,7 +4,10 @@ from openai import OpenAI
 
 # Set API credentials and endpoint
 openai_api_key = os.environ.get("OPEN_API_KEY")
-openai_api_base = "https://api.lambda.ai/v1"
+# get this from the env variable too
+#openai_api_base = "https://api.lambda.ai/v1"
+openai_api_base = "https://api.moonshot.ai/v1"
+
 
 
 # Initialize the OpenAI client
@@ -14,7 +17,8 @@ client = OpenAI(
 )
 
 # Choose the model
-model = "llama-4-maverick-17b-128e-instruct-fp8"
+# model = "llama-4-maverick-17b-128e-instruct-fp8"
+model="kimi-k2-0711-preview"
 
 # Create a multi-turn chat completion request
 chat_completion = client.chat.completions.create(

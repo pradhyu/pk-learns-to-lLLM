@@ -1,0 +1,34 @@
+package com.example.rules
+
+import com.example.model.Order;
+import com.example.model.Customer;
+import com.example.model.Discount;
+
+global Discount discount;
+
+rule "Apply Discount For Large Orders"
+    when
+        $order : Order(total > 1000)
+        $customer : Customer(customerType != "PREMIUM")
+    then
+        discount.setPercentage(5);
+        System.out.println("Applied 5% discount for large order");
+end
+
+rule "Apply Premium Customer Discount"
+    when
+        $order : Order()
+        $customer : Customer(customerType == "PREMIUM")
+    then
+        discount.setPercentage(10);
+        System.out.println("Applied 10% discount for premium customer");
+end
+
+rule "Apply Special Holiday Discount"
+    when
+        $order : Order(orderDate.month == 12)
+        eval(discount.getPercentage() < 15)
+    then
+        discount.setPercentage(15);
+        System.out.println("Applied 15% holiday discount");
+end

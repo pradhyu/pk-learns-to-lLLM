@@ -1,0 +1,31 @@
+package com.example.rules
+
+import com.example.model.Customer;
+import com.example.model.ValidationResult;
+
+global ValidationResult validationResult;
+
+rule "Validate Customer Age"
+    salience 100
+    when
+        $customer : Customer(age < 18)
+    then
+        validationResult.addError("Customer must be at least 18 years old");
+        System.out.println("Customer age validation failed: " + $customer.getName());
+end
+
+rule "Validate Customer Email"
+    when
+        $customer : Customer(email == null || email == "" || !email.matches("^[A-Za-z0-9+_.-]+@(.+)$"))
+    then
+        validationResult.addError("Customer email is invalid");
+        System.out.println("Customer email validation failed: " + $customer.getName());
+end
+
+rule "Validate Premium Customer"
+    extends "Validate Customer Age"
+    when
+        $customer : Customer(customerType == "PREMIUM")
+    then
+        System.out.println("Premium customer validation passed: " + $customer.getName());
+end
